@@ -1,4 +1,4 @@
-import { login, logout, getUserInfo } from '@/api/user'
+import { login, logout, getuserinfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -7,7 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: 'liufulong',
     avatar: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
-    roles: ['admin']
+    roles: []
   }
 }
 
@@ -25,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  ADD_ROLE: (state, role) => {
+    state.roles.push(role)
   }
 }
 
@@ -49,17 +52,15 @@ const actions = {
   // get user info
   getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getUserInfo(state.token).then(response => {
-        const { data } = response  // 本步骤是将response的data属性取出来赋值data变量
-
+      getuserinfo(state.token).then(data => {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        // const { name, avatar } = data
+        //
+        // commit('SET_NAME', name)
+        // commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -86,6 +87,13 @@ const actions = {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
+      resolve()
+    })
+  },
+  // add role
+  addRole({ commit }, role) {
+    return new Promise(resolve => {
+      commit('ADD_ROLE', role)
       resolve()
     })
   }

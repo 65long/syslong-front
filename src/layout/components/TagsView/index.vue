@@ -46,7 +46,7 @@ export default {
       return this.$store.state.tagsView.visitedViews
     }
     // routes() {
-    // 因为为用到permissoin暂时注释
+    // // 因为为用到permissoin暂时注释
     //   return this.$store.state.permission.routes
     // }
   },

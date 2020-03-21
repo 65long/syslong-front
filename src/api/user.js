@@ -11,9 +11,9 @@ export function login(username, password) {
   })
 }
 
-export function getUserInfo(token) {
+export function getuserinfo(token) {
   return request({
-    url: '此处url暂定/未实现',
+    url: 'rbac/menu/',
     method: 'get',
     params: { token }
   })
@@ -25,6 +25,7 @@ export function logout() {
     method: 'post'
   })
 }
+
 export function getMenus() {
   // 返回值为[{示例如下}, {}]
   // path: '/research',
@@ -35,9 +36,7 @@ export function getMenus() {
   // meta: { title: '刘福龙', icon: 'wechat' },
   // children: []
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/rbac/menu/',
+    method: 'get'
   })
 }
-
-

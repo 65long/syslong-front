@@ -2,6 +2,7 @@ import { constantRoutes } from '@/router/index'
 import Layout from '@/layout/index'
 
 const permission = {
+  namespaced: true,
   state: {
     routers: constantRoutes,
     addRouters: []
@@ -20,6 +21,10 @@ const permission = {
   }
 }
 
+const loadView = (view) => { // 路由懒加载
+  return () => import(`@/views/${view}`)
+}
+
 export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = routers.filter(router => {
     if (router.component) {
@@ -36,10 +41,6 @@ export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由�
     return true
   })
   return accessedRouters
-}
-
-export const loadView = (view) => { // 路由懒加载
-  return () => import(/* webpackChunkName: "view-[request]" */  `@/views/${view}`)
 }
 
 export default permission

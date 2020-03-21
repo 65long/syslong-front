@@ -4,7 +4,7 @@
       <!-- <router-view :key="key" />-->
       <keep-alive :include="cachedViews">
         <!--添加router-view-->
-        <router-view :key="key" />
+        <router-view />
       </keep-alive>
     </transition>
   </section>
@@ -14,11 +14,13 @@ export default {
   name: 'AppMain',
   computed: {
     cachedViews() {
+      console.log('this.$store.getters', this.$store.getters)
+      <!--return this.$store.getters.cachedViews-->
       return this.$store.state.tagsView.cachedViews
-    },
-    key() {
-      return this.$route.fullPath
     }
+    <!--key() {-->
+      <!--return this.$route.fullPath-->
+    <!--}-->
   }
 }
 
