@@ -1,16 +1,19 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login(username, password) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: 'rbac/login/',
     method: 'post',
-    data
+    data: {
+      username,
+      password
+    }
   })
 }
 
-export function getInfo(token) {
+export function getUserInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: '此处url暂定/未实现',
     method: 'get',
     params: { token }
   })
@@ -22,3 +25,19 @@ export function logout() {
     method: 'post'
   })
 }
+export function getMenus() {
+  // 返回值为[{示例如下}, {}]
+  // path: '/research',
+  // component: Layout,
+  // redirect: '/research/respage01',
+  // name: 'Research',
+  // alwaysShow: true,
+  // meta: { title: '刘福龙', icon: 'wechat' },
+  // children: []
+  return request({
+    url: '/vue-admin-template/user/logout',
+    method: 'post'
+  })
+}
+
+

@@ -1,12 +1,13 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getUserInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: ''
+    name: 'liufulong',
+    avatar: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
+    roles: ['admin']
   }
 }
 
@@ -30,24 +31,26 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    // const { username, password } = userInfo
+    const username = userInfo.username
+    const password = userInfo.password
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
+      login(username.trim(), password).then(data => {
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
       }).catch(error => {
+        console.log('err', error)
         reject(error)
       })
     })
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      getUserInfo(state.token).then(response => {
+        const { data } = response  // 本步骤是将response的data属性取出来赋值data变量
 
         if (!data) {
           reject('Verification failed, please Login again.')
