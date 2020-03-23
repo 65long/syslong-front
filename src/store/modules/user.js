@@ -1,12 +1,13 @@
-import { login, logout, getuserinfo } from '@/api/user'
+import { login, getuserinfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: 'liufulong',
-    avatar: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
+    name: '',
+    avatar: '',
+    role: '',
     roles: []
   }
 }
@@ -26,8 +27,11 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  ADD_ROLE: (state, role) => {
-    state.roles.push(role)
+  ADD_ROLE: (state) => {
+    state.roles.push(state.role)
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   }
 }
 
@@ -40,6 +44,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(username.trim(), password).then(data => {
         commit('SET_TOKEN', data.token)
+        commit('SET_NAME', data.username)
+        // commit('SET_AVATAR', data.username)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png')
+        commit('SET_ROLE', data.role)
         setToken(data.token)
         resolve()
       }).catch(error => {
@@ -71,14 +79,14 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      try {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
-      }).catch(error => {
+      } catch (error) {
         reject(error)
-      })
+      }
     })
   },
 

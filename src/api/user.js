@@ -1,42 +1,42 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function addUser(userObj) {
   return request({
-    url: 'rbac/login/',
+    url: '/rbac/users/',
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    data: userObj
   })
 }
 
-export function getuserinfo(token) {
+export function deleteUser(id) {
   return request({
-    url: 'rbac/menu/',
+    url: '/rbac/users/' + id + '/',
+    method: 'delete'
+  })
+}
+
+export function editUser(id, userObj) {
+  return request({
+    url: '/rbac/users/' + id + '/',
+    method: 'put',
+    data: userObj
+  })
+}
+
+export function updatePasswd(id, data) {
+  return request({
+    url: '/rbac/users/' + id + '/change-passwd/',
+    method: 'post',
+    data
+  })
+}
+
+export function getUserList(queryInfo) {
+  return request({
+    url: '/rbac/users/',
     method: 'get',
-    params: { token }
+    // queryInfo 为object
+    params: queryInfo
   })
 }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
-}
-
-export function getMenus() {
-  // 返回值为[{示例如下}, {}]
-  // path: '/research',
-  // component: Layout,
-  // redirect: '/research/respage01',
-  // name: 'Research',
-  // alwaysShow: true,
-  // meta: { title: '刘福龙', icon: 'wechat' },
-  // children: []
-  return request({
-    url: '/rbac/menu/',
-    method: 'get'
-  })
-}

@@ -5,7 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style 页面进度条
 import { getToken } from '@/utils/auth' // get token from cookie 从cookie中获取token
 import getPageTitle from '@/utils/get-page-title'
-import { getMenus } from '@/api/user' // 获取后台菜单
+import { getMenus } from '@/api/login' // 获取后台菜单
 import { filterAsyncRouter } from './store/modules/permission' // 为生成添加动态路由做准备
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -45,27 +45,28 @@ router.beforeEach(async(to, from, next) => {
       //     NProgress.done()
       //   }
       // }
-      console.log('cachedViews', store.getters.cachedViews)
       // 判断是否已经成功获取用户信息
       if (store.getters.roles.length === 0) {
         // 若要获取用户信息可打开注释
         // store.dispatch('user/getUserInfo')
-        store.dispatch('user/addRole', 'admin')
-        getMenus()
-          .then(res => {
-            // 定义动态路由
-            const asyncRouter = filterAsyncRouter(res.menu_list)
-            // 添加任意匹配不到任意路由界面访问404
-            asyncRouter.push({ path: '*', redirect: '/404', hidden: true })
-            store.dispatch('permission/GenRoutes', asyncRouter)
-            // 存储路由到state.addRouters
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            // router.options.routes = store.getters.routers // 此处可以添加如果更改sidebar引用源则不必添加
-            next({ ...to, replace: true })// hack方法 确保addRoutes已完成
-          })
-          .catch(err => {
-            console.log('获取后台菜单失败', err)
-          })
+        store.dispatch('user/addRole')
+          .then(
+            getMenus()
+              .then(res => {
+                // 定义动态路由
+                const asyncRouter = filterAsyncRouter(res.menu_list)
+                // 添加任意匹配不到任意路由界面访问404
+                asyncRouter.push({ path: '*', redirect: '/404', hidden: true })
+                store.dispatch('permission/GenRoutes', asyncRouter)
+                // 存储路由到state.addRouters
+                router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                router.options.routes = store.getters.routers // 此处可以添加如果更改sidebar引用源则不必添加
+                next({ ...to, replace: true })// hack方法 确保addRoutes已完成
+              })
+              .catch(err => {
+                console.log('获取后台菜单失败', err)
+              })
+          )
         // 放行
         next()
       } else {
