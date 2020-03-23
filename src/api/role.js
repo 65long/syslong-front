@@ -57,7 +57,7 @@ export function delRole(id_int) {
 export function editRole(id_int, data_obj) {
   return request({
     url: `/rbac/roles/${id_int}/`,
-    method: 'delete',
+    method: 'put',
     data: data_obj
   })
 }

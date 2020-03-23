@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { permsListDisplay } from '@/api/perms'
 export default {
   name: 'Perms',
   data() {
@@ -32,9 +33,9 @@ export default {
   methods: {
     getPermsList() {
       // 获取权限列表
-      this.$axios.get('/rbac/permslist/')
+      permsListDisplay()
         .then(res => {
-          this.permsList = res.data
+          this.permsList = res
         })
         .catch(() => {
           this.$message.error('获取权限列表失败')

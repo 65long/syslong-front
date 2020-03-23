@@ -15,7 +15,9 @@ const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-
+  console.log('from---', from.fullPath)
+  console.log('to---', to.fullPath)
+  console.log('--------华丽的分割线---------')
   // set page title
   document.title = getPageTitle(to.meta.title)
 
@@ -45,7 +47,7 @@ router.beforeEach(async(to, from, next) => {
       //     NProgress.done()
       //   }
       // }
-      // 判断是否已经成功获取用户信息
+      // 判断是否已经成功获取用户角色信息
       if (store.getters.roles.length === 0) {
         // 若要获取用户信息可打开注释
         // store.dispatch('user/getUserInfo')

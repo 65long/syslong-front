@@ -195,7 +195,8 @@
 
 <script>
 import { ChangeDataPermMode, dataPermsMode, addRole, delRole, editRole, roleList,
-  getPermsOfRole, delPermsOfRole, addPermsForRole } from '../../../api/role'
+  getPermsOfRole, delPermsOfRole, addPermsForRole } from '@/api/role'
+import { updateDataList } from '@/utils/ary'
 export default {
   name: 'Roles',
   data() {
@@ -261,16 +262,6 @@ export default {
     this.getRoleList()
   },
   methods: {
-    // 更新数组
-    updateDataList(newObj, updateArrary) {
-      // 更新数据
-      updateArrary.forEach((oldObj, index) => {
-        if (newObj.id === oldObj.id) {
-          updateArrary.splice(0, 1, newObj)
-          return
-        }
-      })
-    },
     submitChangeDataPermMode() {
       if (this.dataModeSelect) {
         var data = { role_id: this.operRoleId, mode: this.dataModeSelect,
@@ -346,7 +337,7 @@ export default {
       })
     },
     addDialogClose() {
-      this.addRoleForm.clear()
+      this.addRoleForm = {}
       this.$refs.editRoleForm.resetFields()
     },
     deleteRole(role) {
@@ -356,7 +347,7 @@ export default {
         .then(() => {
           delRole(role.id)
             .then(res => {
-              this.$message.success(`删除权限成功---${role.name}`)
+              this.$message.success(`删除职位成功---${role.name}`)
               this.getRoleList()
             })
             .catch(() => {
@@ -370,7 +361,7 @@ export default {
     editDialogClose() {
       // 修改职位对话框关闭之后做的动作，重置表单的验证效果
       // 重置提交数据表单
-      this.editRoleForm.clear()
+      this.editRoleForm = {}
       this.$refs.editRoleForm.resetFields()
     },
     submitRoleEdit() {
@@ -386,7 +377,7 @@ export default {
           editRole(this.operRoleId, this.editRoleForm)
             .then(res => {
               // console.log(res.data);
-              this.updateDataList(res, this.roleList)
+              updateDataList(res, this.roleList)
               this.closeEditRoleDialog()
               this.$message.success('修改职位信息成功')
             })
@@ -399,6 +390,7 @@ export default {
     showEditRoleDialog(role) {
       // 打开职位编辑对话狂
       this.operRoleId = role.id
+      this.editRoleForm = role
       this.editDialogVisible = true
     },
     closeEditRoleDialog() {
@@ -447,7 +439,7 @@ export default {
           delPermsOfRole(param)
             .then(res => {
               this.$message.success(`删除权限成功---${name}`)
-              role.perms = res.data
+              role.perms = res
             })
             .catch(err => {
               this.$message.error(`删除权限失败---${name}`, err)
@@ -477,7 +469,7 @@ export default {
           // role.perms = res.data
           this.roleList.forEach(role => {
             if (role.id === this.operRoleId) {
-              role.perms = res.data
+              role.perms = res
             }
           })
 
