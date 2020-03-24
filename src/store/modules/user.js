@@ -1,13 +1,14 @@
-import { login, getuserinfo } from '@/api/login'
+import { login } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getUserInfo, setUserInfo, removeUserInfo } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: '',
-    role: '',
+    name: getUserInfo().name,
+    avatar: getUserInfo().avatar,
+    role: getUserInfo.role,
     roles: []
   }
 }
@@ -43,12 +44,14 @@ const actions = {
     const password = userInfo.password
     return new Promise((resolve, reject) => {
       login(username.trim(), password).then(data => {
+        const avatar = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
         commit('SET_TOKEN', data.token)
         commit('SET_NAME', data.username)
         // commit('SET_AVATAR', data.username)
-        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png')
+        commit('SET_AVATAR', avatar)
         commit('SET_ROLE', data.role)
         setToken(data.token)
+        setUserInfo({ name: data.username, avatar, role: data.role })
         resolve()
       }).catch(error => {
         console.log('err', error)
@@ -58,29 +61,30 @@ const actions = {
   },
 
   // get user info
-  getUserInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getuserinfo(state.token).then(data => {
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        // const { name, avatar } = data
-        //
-        // commit('SET_NAME', name)
-        // commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  // getUserInfo({ commit, state }) {
+  //   return new Promise((resolve, reject) => {
+  //     getuserinfo(state.token).then(data => {
+  //       if (!data) {
+  //         reject('Verification failed, please Login again.')
+  //       }
+  //
+  //       // const { name, avatar } = data
+  //       //
+  //       // commit('SET_NAME', name)
+  //       // commit('SET_AVATAR', avatar)
+  //       resolve(data)
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
 
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       try {
         removeToken() // must remove  token  first
+        removeUserInfo() // must remove  userInfo  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
