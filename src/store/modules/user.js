@@ -80,13 +80,15 @@ const actions = {
   // },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       try {
         removeToken() // must remove  token  first
         removeUserInfo() // must remove  userInfo  first
         resetRouter()
         commit('RESET_STATE')
+        // 删除已经浏览过的页签
+        dispatch('tagsView/delAllVisitedViews', {}, { root: true })
         resolve()
       } catch (error) {
         reject(error)

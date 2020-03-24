@@ -46,8 +46,6 @@ router.beforeEach(async(to, from, next) => {
       // }
       // 判断是否已经成功获取用户角色信息
       if (store.getters.roles.length === 0) {
-        // 若要获取用户信息可打开注释
-        // store.dispatch('user/getUserInfo')
         store.dispatch('user/addRole')
           .then(
             getMenus()

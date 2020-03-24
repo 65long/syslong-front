@@ -66,6 +66,20 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '主页', icon: 'dashboard' }
     }]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'center',
+        component: () => import('@/views/system/users/Center'),
+        name: 'Center',
+        meta: { title: '个人中心', icon: 'user' }
+      }
+    ]
   }
   // {
   //   path: 'external-link',

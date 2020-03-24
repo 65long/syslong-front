@@ -16,11 +16,16 @@
               主页
             </el-dropdown-item>
           </router-link>
+          <router-link :to="{name: 'Center'}">
+            <el-dropdown-item>
+              个人中心
+            </el-dropdown-item>
+          </router-link>
           <!--<a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">-->
-            <!--<el-dropdown-item>Github</el-dropdown-item>-->
+          <!--<el-dropdown-item>Github</el-dropdown-item>-->
           <!--</a>-->
           <!--<a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">-->
-            <!--<el-dropdown-item>Docs</el-dropdown-item>-->
+          <!--<el-dropdown-item>Docs</el-dropdown-item>-->
           <!--</a>-->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">注销</span>
@@ -122,7 +127,7 @@ export default {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
         }
 
         .el-icon-caret-bottom {
