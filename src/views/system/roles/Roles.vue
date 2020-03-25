@@ -108,7 +108,7 @@
         @close="editDialogClose"
       >
         <!--这是修改主题区-->
-        <el-form ref="editRoleForm" :model="editRoleForm" :rules="editRoleRules" label-width="70px">
+        <el-form ref="editRoleForm" :model="editRoleForm" :rules="editRoleRules" label-width="80px">
           <el-form-item prop="name" label="职位名称">
             <el-input v-model="editRoleForm.name" placeholder="职位名称" />
           </el-form-item>

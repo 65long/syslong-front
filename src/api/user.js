@@ -40,3 +40,12 @@ export function getUserList(queryInfo) {
   })
 }
 
+export function changeUserPwd(pwdInfo) {
+  return request({
+    url: '/rbac/chagepwd/',
+    method: 'post',
+    // queryInfo 为object
+    data: pwdInfo
+  })
+}
+

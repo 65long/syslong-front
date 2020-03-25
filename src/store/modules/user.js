@@ -4,11 +4,12 @@ import { getUserInfo, setUserInfo, removeUserInfo } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
+  const userInfo = getUserInfo()
   return {
     token: getToken(),
-    name: getUserInfo().name,
-    avatar: getUserInfo().avatar,
-    role: getUserInfo.role,
+    name: userInfo.name,
+    avatar: userInfo.avatar,
+    role: userInfo.role,
     roles: []
   }
 }
@@ -44,14 +45,15 @@ const actions = {
     const password = userInfo.password
     return new Promise((resolve, reject) => {
       login(username.trim(), password).then(data => {
-        const avatar = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+        // const avatar = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
         commit('SET_TOKEN', data.token)
         commit('SET_NAME', data.username)
         // commit('SET_AVATAR', data.username)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', data.head_img)
         commit('SET_ROLE', data.role)
         setToken(data.token)
-        setUserInfo({ name: data.username, avatar, role: data.role })
+        setUserInfo({ name: data.username, avatar: data.head_img, role: data.role, last_login: data.last_login,
+          date_joined: data.date_joined, email: data.email, mobile: data.mobile, nickname: data.nickname })
         resolve()
       }).catch(error => {
         console.log('err', error)
@@ -108,6 +110,16 @@ const actions = {
   addRole({ commit }, role) {
     return new Promise(resolve => {
       commit('ADD_ROLE', role)
+      resolve()
+    })
+  },
+  // add role
+  changeAvatar({ commit }, avatar) {
+    return new Promise(resolve => {
+      commit('SET_AVATAR', avatar)
+      const userinfo = getUserInfo()
+      userinfo.avatar = avatar
+      setUserInfo(userinfo)
       resolve()
     })
   }
