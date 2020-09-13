@@ -24,6 +24,7 @@
 
         <el-table-column prop="username" label="姓名" width="100" />
         <el-table-column prop="nickname" label="昵称" width="100" />
+        <el-table-column prop="dept" label="部门" width="100" />
         <el-table-column label="角色" width="100">
           <template slot-scope="scope">
             <span v-if="scope.row.is_superuser">系统管理员</span>

@@ -103,7 +103,7 @@ export default {
     }
     return {
       userInfo: getUserInfo(),
-      uploadImgUrl: 'http://118.31.12.178:8000/api/rbac/upload/user/headimg/',
+      uploadImgUrl: 'http://118.31.12.178:8888/api/rbac/upload/user/headimg/',
       headerObj: {
         token: getToken()
       },
