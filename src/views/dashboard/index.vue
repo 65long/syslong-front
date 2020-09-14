@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
     <!--<div id="main" ref="myechart" style="width: 600px;height:400px;" />-->
-    <EChart :echartObj="echartObj"/>
+    <EChart :echart-obj="echartObj" />
   </div>
 </template>
 
@@ -11,11 +11,14 @@ import { mapGetters } from 'vuex'
 import EChart from '@/components/echart/echart'
 export default {
   name: 'Dashboard',
+  components: {
+    EChart
+  },
   data() {
     return {
       echartObj: {
         title: {
-          text: 'ECharts 入门示例'
+          text: '我的测试你的心'
         },
         tooltip: {},
         legend: {
@@ -96,9 +99,6 @@ export default {
         }]
       })
     }
-  },
-  components: {
-    EChart
   }
 }
 </script>

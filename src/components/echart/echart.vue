@@ -9,7 +9,9 @@ export default {
   props: {
     echartObj: {
       type: Object,
-      default: {}
+      default: function() {
+        return {}
+      }
     }
   },
   data() {
@@ -37,6 +39,9 @@ export default {
         title: {
           text: this.echartObj.title.text
         },
+        legend: {
+          data: this.echartObj.legend.data
+        },
         tooltip: {},
         xAxis: {
           data: this.echartObj.xAxis.data
@@ -51,7 +56,7 @@ export default {
 
 <style scoped>
   #chart{
-    width: 700px;
-    height: 500px;
+    width: 400px;
+    height: 300px;
   }
 </style>
