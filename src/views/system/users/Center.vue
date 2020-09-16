@@ -152,7 +152,10 @@ export default {
               console.log(err)
             })
         } else {
-          this.$message.warning('信息填写有误')
+          this.$notify.warning({
+            title: '失败',
+            message: '信息填写有误'
+          })
         }
       })
     },

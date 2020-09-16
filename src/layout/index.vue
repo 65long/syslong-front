@@ -7,7 +7,7 @@
         <navbar />
       </div>
       <!--tags-view为新添加-->
-      <tags-view />
+      <tags-view v-if="needTagsView" />
       <app-main />
     </div>
   </div>
@@ -27,6 +27,9 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
+    needTagsView() {
+      return this.$store.state.settings.tagsView
+    },
     sidebar() {
       return this.$store.state.app.sidebar
     },

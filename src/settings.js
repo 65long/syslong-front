@@ -13,6 +13,6 @@ module.exports = {
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: false,
-  // 开启tagsView 页签模式
+  // 不开启tagsView 页签模式
   tagsView: true
 }
