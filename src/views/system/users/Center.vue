@@ -129,7 +129,7 @@ export default {
   },
   computed: {
     avatar() {
-      console.log(this.userInfo)
+      // console.log(this.userInfo)
       return this.$store.getters.avatar
     }
   },
