@@ -22,7 +22,8 @@ const permission = {
 }
 
 const loadView = (view) => { // 路由懒加载
-  return () => import(`@/views/${view}`)
+  // return () => import(`@/views/${view}`)
+  return resolve => require([`@/views/${view}`], resolve)
 }
 
 export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象

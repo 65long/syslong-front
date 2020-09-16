@@ -1,14 +1,43 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <!--<div id="main" ref="myechart" style="width: 600px;height:400px;" />-->
-    <EChart :echart-obj="echartObj" />
+    <el-row :gutter="50">
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>视图名称1</span>
+            <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
+          </div>
+          <EChart :echart-obj="barEchart" />
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <el-button style="float: right; padding: 3px 0" type="text" @click="updateBarData">刷新</el-button>
+          </div>
+          <EChart :echart-obj="lineEchart" />
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
+          </div>
+          <EChart :echart-obj="pieEchart" />
+        </el-card>
+      </el-col>
+      <!--<el-col :span="6"><div class="grid-content bg-purple" /></el-col>-->
+      <!--<el-col :span="6"><div class="grid-content bg-purple" /></el-col>-->
+    </el-row>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import EChart from '@/components/echart/echart'
+import { getBarData } from '@/api/dashboard'
+
 export default {
   name: 'Dashboard',
   components: {
@@ -16,23 +45,82 @@ export default {
   },
   data() {
     return {
-      echartObj: {
+      barEchart: {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar',
+          showBackground: true,
+          backgroundStyle: {
+            color: 'rgba(220, 220, 220, 0.8)'
+          }
+        }]
+      },
+      lineEchart: {
         title: {
-          text: '我的测试你的心'
+          text: '销量折线图'
         },
         tooltip: {},
         legend: {
-          data: ['销量']
+          // 这个data是标签列表
+          data: []
         },
         xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          data: []
         },
         yAxis: {},
         series: [
+          // {
+          //   name: '销量', 该线图或者折线图的名称
+          //   data: [],  数据列表
+          //   type: 'line',  数据类型
+          //   smooth: true  平滑型
+          // }
+        ]
+      },
+      pieEchart: {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 10,
+          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        },
+        series: [
           {
-            name: '销量',
-            type: 'bar',
-            data: [-1, 20, 36, 10, 10, 20]
+            name: '访问来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              { value: 335, name: '直接访问' },
+              { value: 310, name: '邮件营销' },
+              { value: 234, name: '联盟广告' },
+              { value: 135, name: '视频广告' },
+              { value: 1548, name: '搜索引擎' }
+            ]
           }
         ]
       }
@@ -44,62 +132,32 @@ export default {
     ])
   },
   mounted() {
-    // this.drawChart()
-    // this.init_echart()
+
   },
   methods: {
-    drawChart() {
-      // 基于准备好的dom，初始化echarts实例
-      const myChart = this.$echarts.init(document.getElementById('main'))
-      // 指定图表的配置项和数据
-      const option = {
-        title: {
-          text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        legend: {
-          data: ['销量']
-        },
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [
-          {
-            name: '销量',
-            type: 'bar',
-            data: [-1, 20, 36, 10, 10, 20]
-          }
-        ]
-      }
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option)
+    updateBarData() {
+      this.getBarData_()
     },
-    init_echart() {
-      this.chart = this.$echarts.init(this.$refs.myechart)
-      this.setOptions()
-    },
-    setOptions() {
-      this.chart.setOption({
-        title: {
-          text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        legend: {
-          data: ['销量']
-        },
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      })
+    getBarData_() {
+      // request.get('/rbac/permslist/')
+      getBarData()
+        .then(res => {
+          this.$message.success('获取数据成功')
+          var series = { data: [], name: '销量', smooth: true, type: 'line' }
+          var x_data = []
+          res.forEach(perm => {
+            series.data.push(Math.floor(Math.random() * 1000))
+            x_data.push(perm.name)
+          })
+          this.lineEchart.series = series
+          this.lineEchart.xAxis.data = x_data
+        })
+        .catch(err => {
+          this.$message.error('获取数据失败---' + err.message)
+        })
     }
   }
+
 }
 </script>
 
@@ -112,5 +170,8 @@ export default {
       font-size: 30px;
       line-height: 46px;
     }
+  }
+  .box-card {
+    width: 450px;
   }
 </style>

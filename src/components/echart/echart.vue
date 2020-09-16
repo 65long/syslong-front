@@ -1,9 +1,10 @@
 <template>
-  <div id="chart" ref="chart" />
+  <div id="chart" ref="chart" :style="sizeObj" />
 </template>
 
 <script>
 import Echarts from 'echarts'
+
 export default {
   name: 'Echart',
   props: {
@@ -12,6 +13,12 @@ export default {
       default: function() {
         return {}
       }
+    },
+    sizeObj: {
+      type: String,
+      default: function() {
+        return 'width: 400px;height:300px;'
+      }
     }
   },
   data() {
@@ -19,12 +26,22 @@ export default {
       myChart: {}
     }
   },
+  watch: {
+    echartObj: {
+      handler(newVal, oldVal) {
+        if (this.myChart) {
+          this.myChart.setOption(newVal)
+        }
+      },
+      deep: true
+    }
+  },
 
   mounted() {
-    // const _this = this
-    // window.onresize = function() {
-    // _this.myChart.resize()
-    // }
+    const _this = this
+    window.resize = function() {
+      _this.myChart.resize()
+    }
   },
 
   created() {
@@ -35,28 +52,29 @@ export default {
   methods: {
     loadEchart() {
       this.myChart = Echarts.init(this.$refs.chart)
-      this.myChart.setOption({
-        title: {
-          text: this.echartObj.title.text
-        },
-        legend: {
-          data: this.echartObj.legend.data
-        },
-        tooltip: {},
-        xAxis: {
-          data: this.echartObj.xAxis.data
-        },
-        yAxis: {},
-        series: this.echartObj.series
-      })
+      // { 直接传父组件的对象过来初始化
+      //   title: {
+      //     text: this.echartObj.title.text
+      //   },
+      //   legend: {
+      //     data: this.echartObj.legend.data
+      //   },
+      //   tooltip: {},
+      //   xAxis: {
+      //     data: this.echartObj.xAxis.data
+      //   },
+      //   yAxis: {},
+      //   series: this.echartObj.series
+      // }
+      this.myChart.setOption(this.echartObj)
     }
   }
 }
 </script>
 
 <style scoped>
-  #chart{
-    width: 400px;
-    height: 300px;
-  }
+  /*#chart{*/
+  /*width: 400px;*/
+  /*height: 300px;*/
+  /*}*/
 </style>
