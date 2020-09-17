@@ -17,7 +17,7 @@ export default {
     sizeObj: {
       type: String,
       default: function() {
-        return 'width: 400px;height:300px;'
+        return 'width: 100%;height:100%;'
       }
     }
   },

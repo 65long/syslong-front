@@ -37,12 +37,14 @@
 import { mapGetters } from 'vuex'
 import EChart from '@/components/echart/echart'
 import { getBarData } from '@/api/dashboard'
+import ResizeMixin from '@/layout/mixin/ResizeHandler'
 
 export default {
   name: 'Dashboard',
   components: {
     EChart
   },
+  mixins: [ResizeMixin],
   data() {
     return {
       barEchart: {
@@ -172,6 +174,6 @@ export default {
     }
   }
   .box-card {
-    width: 450px;
+    height: 300px;
   }
 </style>
