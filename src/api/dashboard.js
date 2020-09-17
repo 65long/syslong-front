@@ -6,4 +6,10 @@ export function getBarData() {
     method: 'get'
   })
 }
+export function getSysInfo() {
+  return request({
+    url: '/rbac/get/sysinfo/',
+    method: 'get'
+  })
+}
 
