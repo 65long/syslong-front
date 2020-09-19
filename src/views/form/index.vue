@@ -65,10 +65,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      this.$notify('submit!')
     },
     onCancel() {
-      this.$message({
+      this.$notify({
         message: 'cancel!',
         type: 'warning'
       })

@@ -331,7 +331,6 @@ export default {
       // request.get('/rbac/permslist/')
       getBarData()
         .then(res => {
-          this.$message.success('获取数据成功')
           var series = { data: [], name: '销量', smooth: true, type: 'line' }
           var x_data = []
           res.forEach(perm => {
@@ -342,7 +341,7 @@ export default {
           this.lineEchart.xAxis.data = x_data
         })
         .catch(err => {
-          this.$message.error('获取数据失败---' + err.message)
+          this.$notify.error({ 'message': '获取数据失败---' + err.message, 'title': '错误' })
         })
     }
   }

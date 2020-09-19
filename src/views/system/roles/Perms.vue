@@ -38,7 +38,7 @@ export default {
           this.permsList = res
         })
         .catch(() => {
-          this.$message.error('获取权限列表失败')
+          this.$notify.error('获取权限列表失败')
         })
     }
   }

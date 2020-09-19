@@ -6,12 +6,11 @@
       </div>
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="0px" class="login-form">
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名">
-          </el-input>
+          <el-input v-model="loginForm.username" placeholder="请输入用户名" />
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" placeholder="请输入密码" :type="passwordType ? 'password' : ''" @keyup.enter.native="handleLogin"/>
+          <el-input v-model="loginForm.password" placeholder="请输入密码" :type="passwordType ? 'password' : ''" @keyup.enter.native="handleLogin" />
           <el-tooltip class="item" effect="dark" :content="passwordType ? '显示密码' : '隐藏密码'" placement="top" :enterable="false">
             <span class="show-pwd" @click="showPwd">
               <svg-icon :icon-class="passwordType ? 'eye' : 'eye-open'" />
@@ -70,13 +69,13 @@ export default {
     login() {
       this.$axios.post('/rbac/login', this.loginForm)
         .then(res => {
-          this.$message.success('登录成功')
+          this.$notify.success('登录成功')
           window.sessionStorage.setItem('token', res.data.token)
           window.sessionStorage.setItem('username', res.data.username)
           this.$router.push({ name: 'home' })
         })
         .catch(err => {
-          this.$message.error('login failed---' + err.message)
+          this.$notify.error({ title: '登录失败', message: '原因:' + err.message })
         })
     },
     resetLoginForm() {

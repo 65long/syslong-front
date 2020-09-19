@@ -276,15 +276,18 @@ export default {
                 role.org = res.org
                 this.curMode = this.dataModeSelect
                 this.closeChangeDataPermsDialog()
-                this.$message.success(`更改成功`)
+                this.$notify.success(`更改成功`)
               }
             })
           })
           .catch(() => {
-            this.$message.success('更改失败')
+            this.$notify.success('更改失败')
           })
       } else {
-        this.$message.warning('请选择要更改的数据权限模式')
+        this.$notify.warning({
+          title: '失败',
+          message: '请选择要更改的数据权限模式'
+        })
       }
     },
     getDataPermsMode() {
@@ -295,7 +298,7 @@ export default {
           this.orgDeptList = res.org_dept_lst
         })
         .catch(() => {
-          this.$message.success('获取失败')
+          this.$notify.success('获取失败')
         })
     },
     showChangeDataPermsDialog(role) {
@@ -319,7 +322,7 @@ export default {
       this.$refs.addRoleForm.validate(valid => {
         if (!valid) {
           // 与验证不合法
-          this.$message.error('填写信息错误')
+          this.$notify.error('填写信息错误')
           return
         } else {
           // 与验证合法
@@ -328,10 +331,10 @@ export default {
             .then(res => {
               this.getRoleList()
               this.showAddRoleDialog()
-              this.$message.success('添加职位成功')
+              this.$notify.success('添加职位成功')
             })
             .catch(() => {
-              this.$message.error('添加职位失败')
+              this.$notify.error('添加职位失败')
             })
         }
       })
@@ -347,15 +350,18 @@ export default {
         .then(() => {
           delRole(role.id)
             .then(res => {
-              this.$message.success(`删除职位成功---${role.name}`)
+              this.$notify.success(`删除职位成功---${role.name}`)
               this.getRoleList()
             })
             .catch(() => {
-              this.$message.error(`删除职位失败---${role.name}`)
+              this.$notify.error(`删除职位失败---${role.name}`)
             })
         })
         .catch(() => {
-          this.$message.warning('已经取消删除')
+          this.$notify.warning({
+            title: '失败',
+            message: '您已经取消删除'
+          })
         })
     },
     editDialogClose() {
@@ -369,7 +375,7 @@ export default {
       this.$refs.editRoleForm.validate(valid => {
         if (!valid) {
           // 与验证不合法
-          this.$message.error('填写信息错误')
+          this.$notify.error('填写信息错误')
           return
         } else {
           // 与验证合法
@@ -379,10 +385,10 @@ export default {
               // console.log(res.data);
               updateDataList(res, this.roleList)
               this.closeEditRoleDialog()
-              this.$message.success('修改职位信息成功')
+              this.$notify.success('修改职位信息成功')
             })
             .catch(() => {
-              this.$message.error('更改职位信息失败')
+              this.$notify.error('更改职位信息失败')
             })
         }
       })
@@ -415,7 +421,7 @@ export default {
           this.roleTotal = res.total
         })
         .catch(err => {
-          this.$message.error('获取职位列表错误', err)
+          this.$notify.error('获取职位列表错误', err)
         })
     },
     getPermListToRole(role) {
@@ -428,7 +434,7 @@ export default {
           // console.log(res.data)
         })
         .catch(() => {
-          this.$message.error('获取所有权限列表失败')
+          this.$notify.error('获取所有权限列表失败')
         })
     },
     removeRolePermById(perm_id, role, name) {
@@ -438,11 +444,11 @@ export default {
           var param = { perm_id, role_id: role.id }
           delPermsOfRole(param)
             .then(res => {
-              this.$message.success(`删除权限成功---${name}`)
+              this.$notify.success(`删除权限成功---${name}`)
               role.perms = res
             })
             .catch(err => {
-              this.$message.error(`删除权限失败---${name}`, err)
+              this.$notify.error(`删除权限失败---${name}`, err)
             })
         })
         .catch(err => err)
@@ -465,7 +471,7 @@ export default {
       ]
       addPermsForRole({ role_id: this.operRoleId, perm_id: keys })
         .then(res => {
-          this.$message.success('分配权限成功')
+          this.$notify.success('分配权限成功')
           // role.perms = res.data
           this.roleList.forEach(role => {
             if (role.id === this.operRoleId) {
@@ -476,7 +482,7 @@ export default {
           this.addPermsDialogVisible = false
         })
         .catch(() => {
-          this.$message.error('分配权限失败')
+          this.$notify.error('分配权限失败')
         })
     }
   }

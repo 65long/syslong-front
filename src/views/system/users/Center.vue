@@ -145,7 +145,10 @@ export default {
                 this.$store.dispatch('user/logout', {}, { root: true })
                 this.$router.push({ name: 'center' })
               } else {
-                this.$message.error(res.message)
+                this.$notify.error({
+                  title: '错误',
+                  message: res.message
+                })
               }
             })
             .catch(err => {
@@ -153,7 +156,7 @@ export default {
             })
         } else {
           this.$notify.warning({
-            title: '失败',
+            title: '警告',
             message: '信息填写有误'
           })
         }
@@ -172,11 +175,11 @@ export default {
       const isLt200k = file.size / 1024 / 1024 < 0.2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$notify.error({ 'title': '错误', 'message': '上传头像图片只能是 JPG 格式!' })
         return isJPG
       }
       if (!isLt200k) {
-        this.$message.error('上传头像图片大小不能超过200kb!')
+        this.$notify.error({ 'title': '错误', 'message': '上传头像图片大小不能超过200kb!' })
         return isLt200k
       }
       return isJPG && isLt200k

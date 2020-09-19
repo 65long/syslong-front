@@ -267,7 +267,7 @@ export default {
           this.total = res.total
         })
         .catch(err => {
-          this.$message.error('handleGetUserList' + err.message)
+          this.$notify.error('handleGetUserList' + err.message)
         })
     },
     // 处理每页数量改变
@@ -303,18 +303,18 @@ export default {
       this.$refs.addUserForm.validate(valid => {
         if (!valid) {
           // 与验证不合法
-          this.$message.error('填写信息错误')
+          this.$notify.error('填写信息错误')
           return
         } else {
           // 与验证合法
           addUser(this.addUserForm)
             .then(res => {
-              this.$message.success('添加用户成功')
+              this.$notify.success('添加用户成功')
               this.addDialogVisible = false
               this.handleGetUserList()
             })
             .catch(() => {
-              this.$message.error('添加用户失败')
+              this.$notify.error('添加用户失败')
             })
         }
       })
@@ -340,19 +340,19 @@ export default {
       this.$refs.editUserForm.validate(valid => {
         if (!valid) {
           // 与验证不合法
-          this.$message.error('填写信息有误')
+          this.$notify.error('填写信息有误')
           return
         } else {
           editUser(this.editUserForm.id, this.editUserForm)
             .then(res => {
               // 修改成功关闭对话框
               this.editDialogVisible = false
-              this.$message.success('修改用户信息成功')
+              this.$notify.success('修改用户信息成功')
               // 修改成功之后刷新
               this.updateDataList(res, this.userList)
             })
             .catch(() => {
-              this.$message.error('修改用户信息失败')
+              this.$notify.error('修改用户信息失败')
             })
         }
       })
@@ -378,17 +378,17 @@ export default {
           // 删除用户
           deleteUser(id)
             .then(res => {
-              this.$message.success('删除成功')
+              this.$notify.success('删除成功')
               // 重新整理数据
               // this.delDataListItem(id, this.userList)
               this.handleGetUserList()
             })
             .catch(() => {
-              this.$message.error('删除失败')
+              this.$notify.error('删除失败')
             })
         })
         .catch(() => {
-          this.$message.info('删除取消')
+          this.$notify.info('删除取消')
         })
     },
     showChangeRoleDialog(user) {
@@ -398,14 +398,17 @@ export default {
       this.changeUserRoleDialogVisible = true
     },
     submitChangeRole() {
-      // this.$message.success('更改角色' + this.roleSelect)
+      // this.$notify.success('更改角色' + this.roleSelect)
       if (!this.roleSelect) {
-        this.$message.warning('请选择一个角色')
+        this.$notify.warning({
+          title: '警告',
+          message: '请选择一个角色'
+        })
         return
       }
       changeRoleToUser({ user_id: this.operUserId, role_id: this.roleSelect })
         .then(res => {
-          this.$message.success('分配角色成功')
+          this.$notify.success('分配角色成功')
           this.userList.forEach(user => {
             if (user.id === this.operUserId) {
               user.role = res.role
@@ -414,7 +417,7 @@ export default {
           this.changeUserRoleDialogVisible = false
         })
         .catch(() => {
-          this.$message.error('分配角色失败')
+          this.$notify.error('分配角色失败')
         })
     },
     getRoleList() {
@@ -424,7 +427,7 @@ export default {
           this.roleList = res
         })
         .catch(() => {
-          this.$message.error('获取角色列表失败')
+          this.$notify.error('获取角色列表失败')
         })
     }
 

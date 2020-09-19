@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, Notification } from 'element-ui'
 // import { MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
@@ -77,10 +77,11 @@ service.interceptors.response.use(
   },
   error => {
     console.log('utils/request/err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
+    Notification({
+      title: '响应失败',
+      message: '获取后台响应失败:' + error.message,
+      type: 'warning',
+      duration: 1 * 1000
     })
     return Promise.reject(error)
   }
