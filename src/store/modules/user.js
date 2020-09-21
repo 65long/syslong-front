@@ -1,6 +1,6 @@
 import { login } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { getUserInfo, setUserInfo, removeUserInfo } from '@/utils/auth'
+import { getUserInfo, setUserInfo, updateUserInfo, removeUserInfo } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -39,7 +39,7 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
+  login({ commit, dispatch }, userInfo) {
     // const { username, password } = userInfo
     const username = userInfo.username
     const password = userInfo.password
@@ -51,12 +51,17 @@ const actions = {
         // commit('SET_AVATAR', data.username)
         commit('SET_AVATAR', data.head_img)
         commit('SET_ROLE', data.role)
+        dispatch('settings/changeSetting', { key: 'tagsView', value: data.show_tagsview }, { root: true })
+        dispatch('settings/changeSetting', { key: 'needShowAvatar', value: data.show_avatar }, { root: true })
         setToken(data.token)
-        setUserInfo({ name: data.username, avatar: data.head_img, role: data.role, last_login: data.last_login,
+        setUserInfo({
+          name: data.username, avatar: data.head_img, role: data.role, last_login: data.last_login,
           date_joined: data.date_joined, email: data.email, mobile: data.mobile, nickname: data.nickname })
+        updateUserInfo('tagsView', data.show_tagsview)
+        updateUserInfo('needShowAvatar', data.show_avatar)
         resolve()
       }).catch(error => {
-        console.log('err', error)
+        console.log('login in err', error)
         reject(error)
       })
     })

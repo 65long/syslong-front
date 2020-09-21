@@ -27,6 +27,12 @@ export function setUserInfo(data_obj) {
   return Cookies.set(UserInfoKey, JSON.stringify(data_obj))
 }
 
+export function updateUserInfo(key, val) {
+  const userinfo = getUserInfo()
+  userinfo[key] = val
+  return setUserInfo(userinfo)
+}
+
 export function removeUserInfo() {
   return Cookies.remove(UserInfoKey)
 }

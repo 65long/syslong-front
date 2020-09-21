@@ -1,13 +1,14 @@
 import defaultSettings from '@/settings'
+import { getUserInfo } from '@/utils/auth'
 
-const { showSettings, fixedHeader, sidebarLogo, tagsView, needShowAvatar } = defaultSettings
-
+const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
+const userInfo = getUserInfo()
 const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo,
-  tagsView: tagsView,
-  needShowAvatar: needShowAvatar
+  tagsView: userInfo.tagsView,
+  needShowAvatar: userInfo.needShowAvatar
 }
 
 const mutations = {

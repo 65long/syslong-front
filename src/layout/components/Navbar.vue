@@ -6,31 +6,19 @@
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
-        <div v-if="needShowAvatar" class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <div v-else class="avatar-wrapper">
-          <span>首选项</span>
+        <div class="avatar-wrapper">
+          <img v-if="needShowAvatar" :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <span>{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
-            <el-dropdown-item>
-              主页
-            </el-dropdown-item>
+            <el-dropdown-item>主页</el-dropdown-item>
           </router-link>
+
           <router-link :to="{name: 'Center'}">
-            <el-dropdown-item>
-              个人中心
-            </el-dropdown-item>
+            <el-dropdown-item>首选项</el-dropdown-item>
           </router-link>
-          <!--<a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">-->
-          <!--<el-dropdown-item>Github</el-dropdown-item>-->
-          <!--</a>-->
-          <!--<a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">-->
-          <!--<el-dropdown-item>Docs</el-dropdown-item>-->
-          <!--</a>-->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">注销</span>
           </el-dropdown-item>
@@ -53,7 +41,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ]),
     needShowAvatar() {
       return this.$store.state.settings.needShowAvatar

@@ -54,43 +54,54 @@
 
         </el-col>
       </el-row>
-
     </el-card>
 
     <el-card shadow="never" class="box-card reset-pass">
       <el-row :gutter="20">
-        <el-col :span="10">
-          <el-row>
-            <el-col :span="12"><el-button type="primary" size="mini" @click="showEditForm">修改密码</el-button></el-col>
-            <el-col v-if="editPwdVisible" :span="12"><el-button type="primary" size="mini" @click="submitEditPwd">确认提交</el-button></el-col>
-          </el-row>
-          <p>安全性高的密码可使账号更安全</p>
-          <el-row />
-          <el-row>
-            <p>建议设置同时包含字母，数字，符号的密码。</p>
-          </el-row>
+        <el-col :span="3">
+          <el-button type="primary" size="mini" @click="showEditForm">修改密码</el-button>
         </el-col>
-        <el-col v-if="editPwdVisible" :span="14">
-          <el-form ref="changePwdForm" :model="changePwdForm" :rules="changePwdFormRules" size="small" label-width="88px">
-            <el-form-item label="原密码" prop="old_pwd">
-              <el-input v-model="changePwdForm.old_pwd" type="password" auto-complete="on" style="width: 200px;" />
-            </el-form-item>
-            <el-form-item label="新密码" prop="new_pwd">
-              <el-input v-model="changePwdForm.new_pwd" type="password" auto-complete="on" style="width: 200px;" />
-            </el-form-item>
-            <el-form-item label="确认密码" prop="repeat_pwd">
-              <el-input v-model="changePwdForm.repeat_pwd" type="password" auto-complete="on" style="width: 200px;" @keyup.enter.native="submitEditPwd" />
-            </el-form-item>
-          </el-form>
+        <el-col :span="3">
+          <el-checkbox v-model="showTags" @change="updateTagsConfig">页签模式</el-checkbox>
+        </el-col>
+        <el-col :span="3">
+          <el-checkbox v-model="needShowAvatar" @change="updateAvatarConfig">展示头像</el-checkbox>
         </el-col>
       </el-row>
     </el-card>
+
+    <el-dialog
+      title="修改密码"
+      :visible.sync="editPwdVisible"
+      width="50%"
+      @close="resetChangePwdForm"
+    >
+      <!--这是内容主题区-->
+      <el-form ref="changePwdForm" :model="changePwdForm" :rules="changePwdFormRules" size="small" label-width="88px">
+        <el-form-item label="原密码" prop="old_pwd">
+          <el-input v-model="changePwdForm.old_pwd" type="password" auto-complete="on" style="width: 200px;" />
+        </el-form-item>
+        <el-form-item label="新密码" prop="new_pwd">
+          <el-input v-model="changePwdForm.new_pwd" type="password" auto-complete="on" style="width: 200px;" />
+        </el-form-item>
+        <el-form-item label="确认密码" prop="repeat_pwd">
+          <el-input v-model="changePwdForm.repeat_pwd" type="password" auto-complete="on" style="width: 200px;" @keyup.enter.native="submitEditPwd" />
+        </el-form-item>
+      </el-form>
+
+      <!--底部按钮区域-->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editPwdVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitEditPwd">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getToken, getUserInfo } from '@/utils/auth'
+import { getToken, getUserInfo, updateUserInfo } from '@/utils/auth'
 import { changeUserPwd } from '@/api/user'
+
 export default {
   name: 'Center',
   data() {
@@ -102,8 +113,10 @@ export default {
       }
     }
     return {
+      showTags: this.$store.state.settings.tagsView,
+      needShowAvatar: this.$store.state.settings.needShowAvatar,
       userInfo: getUserInfo(),
-      uploadImgUrl: 'http://118.31.12.178:8888/api/rbac/upload/user/headimg/',
+      uploadImgUrl: 'http://127.0.0.1:8000/api/rbac/upload/user/headimg/',
       headerObj: {
         token: getToken()
       },
@@ -134,6 +147,17 @@ export default {
     }
   },
   methods: {
+    updateTagsConfig(val) {
+      this.$store.dispatch('settings/changeSetting', { key: 'tagsView', 'value': val })
+      updateUserInfo('tagsView', val)
+    },
+    updateAvatarConfig(val) {
+      this.$store.dispatch('settings/changeSetting', { key: 'needShowAvatar', 'value': val })
+      updateUserInfo('needShowAvatar', val)
+    },
+    resetChangePwdForm() {
+      this.changePwdForm = {}
+    },
     submitEditPwd() {
       // 用户修改密码
       this.$refs['changePwdForm'].validate((valid) => {
@@ -212,6 +236,6 @@ export default {
     border-color: #409EFF;
   }
   .content-detail {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 </style>
