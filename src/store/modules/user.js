@@ -46,6 +46,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(username.trim(), password).then(data => {
         // const avatar = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+        var data = data.data
         commit('SET_TOKEN', data.token)
         commit('SET_NAME', data.username)
         // commit('SET_AVATAR', data.username)

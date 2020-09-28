@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: 'rbac/login/',
+    url: 'login/',
     method: 'post',
     data: {
       username,
@@ -13,7 +13,7 @@ export function login(username, password) {
 
 export function getuserinfo(token) {
   return request({
-    url: 'rbac/menu/',
+    url: 'get/menu/',
     method: 'get',
     params: { token }
   })
@@ -37,7 +37,7 @@ export function getMenus() {
   // meta: { title: '刘福龙', icon: 'wechat' },
   // children: []
   return request({
-    url: '/rbac/menu/',
+    url: '/get/menus/',
     method: 'get'
   })
 }

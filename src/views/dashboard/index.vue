@@ -303,10 +303,10 @@ export default {
     ])
   },
   mounted() {
-    this.timer = setInterval(this.get_sys_info, 1000)
+    // this.timer = setInterval(this.get_sys_info, 1000)
   },
   beforeDestroy() {
-    clearInterval(this.timer)
+    // clearInterval(this.timer)
   },
   methods: {
     get_sys_info() {
@@ -318,10 +318,11 @@ export default {
           this.dynamicState.series[2].data[0].value = res.disk_usage
         })
         .catch(err => {
-          this.$notify.warning({
-            title: '失败',
-            message: '获取服务器运行信息错误' + err.message
-          })
+          console.log('获取服务器运行信息错误' + err.message)
+          // this.$notify.warning({
+          //   title: '失败',
+          //   message: '获取服务器运行信息错误' + err.message
+          // })
         })
     },
     updateBarData() {

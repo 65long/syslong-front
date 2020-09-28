@@ -51,7 +51,7 @@ router.beforeEach(async(to, from, next) => {
             getMenus()
               .then(res => {
                 // 定义动态路由
-                const asyncRouter = filterAsyncRouter(res.menu_list)
+                const asyncRouter = filterAsyncRouter(res.data)
                 // 添加任意匹配不到任意路由界面访问404
                 asyncRouter.push({ path: '*', redirect: '/404', hidden: true })
                 store.dispatch('permission/GenRoutes', asyncRouter)

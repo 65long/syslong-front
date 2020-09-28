@@ -33,7 +33,7 @@ export function updatePasswd(id, data) {
 
 export function getUserList(queryInfo) {
   return request({
-    url: '/rbac/users/',
+    url: '/get/users',
     method: 'get',
     // queryInfo 为object
     params: queryInfo
