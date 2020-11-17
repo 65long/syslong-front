@@ -7,9 +7,18 @@ export function permsListDisplay() {
   })
 }
 
-export function modelPermsList() {
+export function modelPermsList(queryInfo) {
   return request({
     url: '/oper/model/perms',
-    method: 'get'
+    method: 'get',
+    params: queryInfo
+  })
+}
+
+export function getWebResList(queryInfo) {
+  return request({
+    url: '/oper/web/res',
+    method: 'get',
+    params: queryInfo
   })
 }
