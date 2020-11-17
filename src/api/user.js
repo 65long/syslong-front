@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addUser(userObj) {
   return request({
-    url: '/rbac/users/',
+    url: '/oper/user',
     method: 'post',
     data: userObj
   })
@@ -10,14 +10,16 @@ export function addUser(userObj) {
 
 export function deleteUser(id) {
   return request({
-    url: '/rbac/users/' + id + '/',
-    method: 'delete'
+    url: '/oper/user',
+    method: 'delete',
+    data: {id: id}
   })
 }
 
 export function editUser(id, userObj) {
+  userObj['id'] = id
   return request({
-    url: '/rbac/users/' + id + '/',
+    url: '/oper/user',
     method: 'put',
     data: userObj
   })
@@ -31,15 +33,6 @@ export function updatePasswd(id, data) {
   })
 }
 
-export function getUserList(queryInfo) {
-  return request({
-    url: '/get/users',
-    method: 'get',
-    // queryInfo 为object
-    params: queryInfo
-  })
-}
-
 export function changeUserPwd(pwdInfo) {
   return request({
     url: '/rbac/chagepwd/',
@@ -49,3 +42,12 @@ export function changeUserPwd(pwdInfo) {
   })
 }
 
+
+export function getUserList(queryInfo) {
+  return request({
+    url: 'get/users/list',
+    method: 'get',
+    // queryInfo 为object
+    params: queryInfo
+  })
+}

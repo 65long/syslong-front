@@ -6,3 +6,10 @@ export function permsListDisplay() {
     method: 'get'
   })
 }
+
+export function modelPermsList() {
+  return request({
+    url: '/oper/model/perms',
+    method: 'get'
+  })
+}
